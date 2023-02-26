@@ -1,0 +1,33 @@
+import java.util.*;
+class Main
+{
+    public String lastNameCheck(String LastName){
+            return LastName.length()<8 ? LastName : LastName.replace("-","").substring(0,8);
+        }
+    public String solution(String C, String S){
+        String[] split=S.split(";");
+        int len=split.length;
+        String[] emails=new String[len];
+        for(int i=0;i<len;i++){
+            String[] names=split[i].trim().toLowerCase().split(" ");
+            emails[i]=names.length==2 ? names[0]+"."+lastNameCheck(names[names.length-1].toLowerCase()) :
+                                        names[0]+"."+lastNameCheck(names[names.length-1].toLowerCase());
+        }
+        StringJoiner joiner=new StringJoiner(", ");
+        for(int i=0;i<emails.length;i++){
+            int count=1;
+            for(int j=0;j<emails.length;j++){
+                if(i!=j && emails[i].equals(emails[j]))
+                    emails[j]=emails[j]+ ++count;
+            }
+            joiner.add(split[i]+" <"+emails[i]+"@"+C.toLowerCase()+".com>");
+        }
+        
+        System.out.println(joiner.toString()+".");
+        return joiner.toString()+".";
+    }    
+	public static void main(String[] args) {
+		Main sol=new Main();
+		sol.solution("Example", "John Doe; Peter Parker; Mary Jane Watson-Parker; James Doe; John Elvis Doe; John Doe; Peter Parker");
+	}
+}
